@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: gateway-demo
+  cloud:
+    gateway:
+      enabled: true
+      routes:
+        #??????StripPrefix???
+        - id: path_route
+          predicates:
+            - Path=/baidu
+          filters:
+            - StripPrefix=1
+          uri: https://www.bilibili.com
+          #cookie???
+        - id: cookie_route
+          predicates:
+            - Cookie=chocolate,ch.p
+          uri: https://www.bilibili.com
+        #?????
+        - id: header_route
+          predicates:
+            - Header=X-Request-Id, \d+
+          uri: https://www.bilibili.com
+        # ????
+        - id: compose
+          predicates:
+            - Path=/compose
+            - Header=name, cong
+          uri: https://www.bilibili.com
+          filters:
+            - StripPrefix=1
