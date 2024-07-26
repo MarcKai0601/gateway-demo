@@ -1,32 +1,57 @@
 spring:
   application:
-    name: gateway-demo
+    name: gateway-demo  # 应用名称
   cloud:
     gateway:
-      enabled: true
+      enabled: true  # 启用 Spring Cloud Gateway
       routes:
-        #??????StripPrefix???
-        - id: path_route
+        # 路径匹配规则，StripPrefix 过滤器会移除请求路径中的前缀
+        - id: path_route  # 路由 ID
           predicates:
-            - Path=/baidu
+            - Path=/baidu  # 当请求路径匹配 /baidu 时应用此路由
           filters:
-            - StripPrefix=1
-          uri: https://www.bilibili.com
-          #cookie???
-        - id: cookie_route
+            - StripPrefix=1  # 移除请求路径中的第一个部分
+          uri: https://www.bilibili.com  # 目标 URI
+
+        # Cookie 匹配规则
+        - id: cookie_route  # 路由 ID
           predicates:
-            - Cookie=chocolate,ch.p
-          uri: https://www.bilibili.com
-        #?????
-        - id: header_route
+            - Cookie=chocolate,ch.p  # 当请求包含名为 chocolate，值为 ch.p 的 Cookie 时应用此路由
+          uri: https://www.bilibili.com  # 目标 URI
+
+        # 请求头匹配规则
+        - id: header_route  # 路由 ID
           predicates:
-            - Header=X-Request-Id, \d+
-          uri: https://www.bilibili.com
-        # ????
-        - id: compose
+            - Header=X-Request-Id, \d+  # 当请求头 X-Request-Id 匹配正则表达式 \d+ 时应用此路由
+          uri: https://www.bilibili.com  # 目标 URI
+
+        # 组合匹配规则
+        - id: compose  # 路由 ID
           predicates:
-            - Path=/compose
-            - Header=name, cong
-          uri: https://www.bilibili.com
+            - Path=/compose  # 当请求路径匹配 /compose 时应用此路由
+            - Header=name, cong  # 且请求头 name 的值为 cong 时应用此路由
+          uri: https://www.bilibili.com  # 目标 URI
           filters:
-            - StripPrefix=1
+            - StripPrefix=1  # 移除请求路径中的第一个部分
+    # sentinel看板相关配置
+    sentinel:
+      transport:
+        dashboard : 127.0.0.1:8081
+#      eager: true
+
+#server:
+#  port: 8080
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: index-route
+#          uri: http://httpbin.org/get
+#          predicates:
+#            - Path=/index
+#          filters:
+#            - AddRequestHeader=X-Example, GatewayDemo
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: DEBUG
+#

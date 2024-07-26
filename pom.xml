@@ -17,44 +17,132 @@
 	<name>gateway-demo</name> <!-- 項目名稱 -->
 	<description>gateway-demo</description> <!-- 項目描述 -->
 
+<!--	<properties>-->
+<!--		<java.version>1.8</java.version> &lt;!&ndash; 設定 Java 版本 &ndash;&gt;-->
+<!--		<spring-cloud.version>Greenwich.SR5</spring-cloud.version>-->
+<!--	</properties>-->
+
+<!--	<dependencyManagement>-->
+<!--		<dependencies>-->
+<!--			<dependency>-->
+<!--				<groupId>org.springframework.cloud</groupId> &lt;!&ndash; Spring Cloud 父項目 &ndash;&gt;-->
+<!--				<artifactId>spring-cloud-dependencies</artifactId> &lt;!&ndash; Spring Cloud 依賴管理 &ndash;&gt;-->
+<!--				<version>${spring-cloud.version}</version> &lt;!&ndash; 使用上面定義的 Spring Cloud 版本 &ndash;&gt;-->
+<!--				<type>pom</type> &lt;!&ndash; 依賴的類型是 POM &ndash;&gt;-->
+<!--				<scope>import</scope> &lt;!&ndash; 將依賴作為管理導入 &ndash;&gt;-->
+<!--			</dependency>-->
+<!--		</dependencies>-->
+<!--	</dependencyManagement>-->
+
+<!--	<dependencies>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId> &lt;!&ndash; Spring Boot 核心依賴 &ndash;&gt;-->
+<!--			<artifactId>spring-boot-starter</artifactId>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId> &lt;!&ndash; Spring Boot 測試依賴 &ndash;&gt;-->
+<!--			<artifactId>spring-boot-starter-test</artifactId>-->
+<!--			<scope>test</scope> &lt;!&ndash; 僅用於測試範圍 &ndash;&gt;-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.cloud</groupId> &lt;!&ndash; Spring Cloud Gateway 依賴 &ndash;&gt;-->
+<!--			<artifactId>spring-cloud-starter-gateway</artifactId>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId> &lt;!&ndash; Spring Boot 驗證依賴 &ndash;&gt;-->
+<!--			<artifactId>spring-boot-starter-validation</artifactId>-->
+<!--		</dependency>-->
+<!--	</dependencies>-->
+
+	<!-- 依赖包版本管理 -->
 	<properties>
-		<java.version>1.8</java.version> <!-- 設定 Java 版本 -->
-		<spring-cloud.version>Greenwich.SR5</spring-cloud.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.boot.version>2.1.8.RELEASE</spring.boot.version>
+		<spring.cloud.version>Greenwich.SR5</spring.cloud.version>
+		<spring.cloud.alibaba.version>2.1.1.RELEASE</spring.cloud.alibaba.version>
+		<mysql.driver.version>8.0.28</mysql.driver.version>
+		<lombok.version>1.16.18</lombok.version>
+		<druid.version>1.1.10</druid.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.springframework.cloud</groupId> <!-- Spring Cloud 父項目 -->
-				<artifactId>spring-cloud-dependencies</artifactId> <!-- Spring Cloud 依賴管理 -->
-				<version>${spring-cloud.version}</version> <!-- 使用上面定義的 Spring Cloud 版本 -->
-				<type>pom</type> <!-- 依賴的類型是 POM -->
-				<scope>import</scope> <!-- 將依賴作為管理導入 -->
+				<groupId>org.springframework.cloud</groupId> <!-- Spring Cloud 父项目 -->
+				<artifactId>spring-cloud-dependencies</artifactId> <!-- Spring Cloud 依赖管理 -->
+				<version>${spring.cloud.version}</version> <!-- 使用定义的 Spring Cloud 版本 -->
+				<type>pom</type> <!-- 依赖类型为 POM -->
+				<scope>import</scope> <!-- 将依赖作为管理导入 -->
+			</dependency>
+
+			<!-- Spring Cloud Alibaba -->
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring.cloud.alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
+		<!-- Spring Boot 核心依赖 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId> <!-- Spring Boot 核心依賴 -->
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring.boot.version}</version>
 		</dependency>
 
+		<!-- Spring Boot 测试依赖 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId> <!-- Spring Boot 測試依賴 -->
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope> <!-- 僅用於測試範圍 -->
+			<version>${spring.boot.version}</version>
+			<scope>test</scope>
 		</dependency>
 
+		<!-- Spring Cloud Gateway 依赖 -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId> <!-- Spring Cloud Gateway 依賴 -->
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
 
+		<!-- 引入sentinel进行服务降级熔断 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId> <!-- Spring Boot 驗證依賴 -->
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
 		</dependency>
+
+		<!-- gateway网关整合sentinel进行限流降级 -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+		</dependency>
+
+		<!-- Spring Boot 验证依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+
+<!--		&lt;!&ndash; Nacos Discovery 依赖 &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--			<version>${spring.cloud.alibaba.version}</version>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash; Nacos Config 依赖 &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+<!--			<version>${spring.cloud.alibaba.version}</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
