@@ -17,41 +17,40 @@ spring:
         - id: cookie_route  # 路由 ID
           predicates:
             - Cookie=chocolate,ch.p  # 当请求包含名为 chocolate，值为 ch.p 的 Cookie 时应用此路由
-          uri: https://www.bilibili.com  # 目标 URI
+          uri: https://www.google.com  # 目标 URI
 
         # 请求头匹配规则
         - id: header_route  # 路由 ID
           predicates:
             - Header=X-Request-Id, \d+  # 当请求头 X-Request-Id 匹配正则表达式 \d+ 时应用此路由
-          uri: https://www.bilibili.com  # 目标 URI
+          uri: https://www.github.com  # 目标 URI
 
         # 组合匹配规则
         - id: compose  # 路由 ID
           predicates:
             - Path=/compose  # 当请求路径匹配 /compose 时应用此路由
             - Header=name, cong  # 且请求头 name 的值为 cong 时应用此路由
-          uri: https://www.bilibili.com  # 目标 URI
+          uri: https://www.youtube.com  # 目标 URI
           filters:
             - StripPrefix=1  # 移除请求路径中的第一个部分
+
+         # 示例服务路由
+        - id: cloud-order-service
+          uri: lb://cloud-order-service  # 假设你有一个名为 cloud-order-service 的服务
+          predicates:
+            - Path=/order/**
+            - After=2020-12-11T10:58:41.659+08:00[Asia/Shanghai]
+            - Before=2025-06-20T22:46:41.659+08:00[Asia/Shanghai]
+            - Between=2025-06-20T22:46:41.659+08:00[Asia/Shanghai],2025-12-11T10:58:41.659+08:00[Asia/Shanghai]
+            - Cookie=username,^\w+$
+            - Header=username,^\w+$
+            - Query=username, \d+
+            - Query=password, \d+
+            - Method=GET
+
     # sentinel看板相关配置
     sentinel:
       transport:
-        dashboard : 127.0.0.1:8081
+        dashboard: 127.0.0.1:8081
 #      eager: true
 
-#server:
-#  port: 8080
-#spring:
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: index-route
-#          uri: http://httpbin.org/get
-#          predicates:
-#            - Path=/index
-#          filters:
-#            - AddRequestHeader=X-Example, GatewayDemo
-#logging:
-#  level:
-#    org.springframework.cloud.gateway: DEBUG
-#
