@@ -36,12 +36,14 @@ spring:
 
          # 示例服务路由
         - id: cloud-order-service
-          uri: lb://cloud-order-service  # 假设你有一个名为 cloud-order-service 的服务
+#          uri: lb://cloud-order-service  # 假设你有一个名为 cloud-order-service 的服务
+          uri:  https://www.facebook.com/
           predicates:
             - Path=/order/**
-            - After=2020-12-11T10:58:41.659+08:00[Asia/Shanghai]
-            - Before=2025-06-20T22:46:41.659+08:00[Asia/Shanghai]
-            - Between=2025-06-20T22:46:41.659+08:00[Asia/Shanghai],2025-12-11T10:58:41.659+08:00[Asia/Shanghai]
+            - After=2020-12-11T10:58:41.659+08:00[Asia/Taipei]
+            - Before=2025-12-11T10:58:41.659+08:00[Asia/Taipei]
+            - Between=2020-06-20T22:46:41.659+08:00[Asia/Taipei],2025-12-11T10:58:41.659+08:00[Asia/Taipei]
+#            -After Before Between 如果同時使用要確認 Between 的時間要跟 After Before 一樣不然會無法匹配
             - Cookie=username,^\w+$
             - Header=username,^\w+$
             - Query=username, \d+
