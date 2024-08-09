@@ -13,7 +13,22 @@ spring:
             - StripPrefix=1  # 移除请求路径中的第一个部分
           uri: https://www.bilibili.com  # 目标 URI
 
-        # Cookie 匹配规则
+        - id: redirect_to_test_route  # 路由 ID
+          uri: http://localhost:8080  # 本地服务
+          predicates:
+            - Path=/a  # 匹配 /login 路径
+          filters:
+            - RedirectTo=302,/test  # 通过 RedirectTo 过滤器实现重定向到 /test
+
+#        - id: path_route_test  # 路由 ID
+#          predicates:
+#            - Path=/b  # 匹配 /login 路径
+#          filters:
+#            - StripPrefix=1  # 移除请求路径中的第一部分
+#          uri: http://localhost:8080/test  # 目标 URI 指向你的本地测试页面
+#         這組用不了本地資源
+
+          # Cookie 匹配规则
         - id: cookie_route  # 路由 ID
           predicates:
             - Cookie=chocolate,ch.p  # 当请求包含名为 chocolate，值为 ch.p 的 Cookie 时应用此路由
@@ -54,5 +69,5 @@ spring:
     sentinel:
       transport:
         dashboard: 127.0.0.1:8081
-#      eager: true
+      eager: true
 
